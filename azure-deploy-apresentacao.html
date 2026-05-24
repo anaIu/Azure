@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deploy na Azure com GitHub — Cloud Computing</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="bar"></div>
+    <div class="deck">
+      <!-- 1: CAPA -->
+      <div class="slide active">
+        <div class="label">Computação em Nuvem — 2026</div>
+        <h1>Deploy na <strong>Azure</strong><br />com GitHub</h1>
+        <p style="max-width: 480px">
+          Como hospedar uma aplicação estática usando Azure Static Web Apps com
+          deploy automático via GitHub Actions.
+        </p>
+        <p style="margin-top: 2rem; font-size: 0.78rem; color: var(--muted)">
+          Ana Flávia Lunedo &nbsp;·&nbsp; Isabela Carbonera Branco
+        </p>
+      </div>
+
+      <!-- 2: O QUE É CLOUD -->
+      <div class="slide">
+        <div class="label">01 — Fundamentos</div>
+        <h2><strong>O que é Cloud Computing?</strong></h2>
+        <p class="subtitle">
+          Recursos de TI entregues via internet, sob demanda, pagando pelo uso.
+        </p>
+        <hr />
+        <div class="two-col">
+          <div class="steps">
+            <div class="step">
+              <div class="step-n">IaaS</div>
+              <div class="step-body">
+                <h4>Infraestrutura como serviço</h4>
+                <p>Você gerencia SO e acima. Ex: Azure VMs.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">PaaS</div>
+              <div class="step-body">
+                <h4>Plataforma como serviço</h4>
+                <p>O provedor gerencia o SO. Você foca no código.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">SaaS</div>
+              <div class="step-body">
+                <h4>Software como serviço</h4>
+                <p>Produto pronto. Ex: Microsoft 365, GitHub.</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p style="margin-bottom: 1rem">Principais benefícios:</p>
+            <div class="steps">
+              <div class="step">
+                <div class="step-n">→</div>
+                <div class="step-body">
+                  <p>Escala automática conforme a demanda</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-n">→</div>
+                <div class="step-body">
+                  <p>Sem necessidade de hardware próprio</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-n">→</div>
+                <div class="step-body"><p>Alta disponibilidade global</p></div>
+              </div>
+              <div class="step">
+                <div class="step-n">→</div>
+                <div class="step-body">
+                  <p>Segurança e atualizações gerenciadas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3: AZURE STATIC WEB APPS -->
+      <div class="slide">
+        <div class="label">02 — Serviço utilizado</div>
+        <h2><strong>Azure Static Web Apps</strong></h2>
+        <p class="subtitle">
+          Serviço PaaS da Microsoft para hospedar sites estáticos com CI/CD
+          nativo via GitHub.
+        </p>
+        <hr />
+        <div class="two-col">
+          <div class="steps">
+            <div class="step">
+              <div class="step-n">→</div>
+              <div class="step-body">
+                <h4>Plano gratuito</h4>
+                <p>
+                  100 GB de banda/mês, SSL gerenciado, domínio personalizado.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">→</div>
+              <div class="step-body">
+                <h4>CDN global</h4>
+                <p>
+                  Conteúdo distribuído em pontos ao redor do mundo, com baixa
+                  latência.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">→</div>
+              <div class="step-body">
+                <h4>Integração nativa com GitHub</h4>
+                <p>
+                  Ao criar o recurso, o workflow de deploy é gerado
+                  automaticamente.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">→</div>
+              <div class="step-body">
+                <h4>Preview por Pull Request</h4>
+                <p>Cada PR abre um ambiente de staging automático.</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p
+              style="
+                margin-bottom: 1.25rem;
+                font-size: 0.82rem;
+                color: var(--muted);
+              "
+            >
+              Fluxo de dados:
+            </p>
+            <div
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.65rem 1rem;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 0.82rem">💻 Computador</span>
+                <span
+                  style="
+                    font-family: var(--mono);
+                    font-size: 0.65rem;
+                    color: var(--muted);
+                  "
+                  >git push</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.65rem 1rem;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <span style="font-size: 0.82rem">🐙 GitHub</span>
+                <span
+                  style="
+                    font-family: var(--mono);
+                    font-size: 0.65rem;
+                    color: var(--muted);
+                  "
+                  >Actions + CI/CD</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.65rem 1rem;
+                  border-bottom: 1px solid var(--border);
+                  background: #f0f7fd;
+                "
+              >
+                <span style="font-size: 0.82rem; color: var(--accent)"
+                  >☁ Azure CDN</span
+                >
+                <span
+                  style="
+                    font-family: var(--mono);
+                    font-size: 0.65rem;
+                    color: var(--muted);
+                  "
+                  >hospedagem global</span
+                >
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 0.65rem 1rem;
+                "
+              >
+                <span style="font-size: 0.82rem">🌍 Usuário final</span>
+                <span
+                  style="
+                    font-family: var(--mono);
+                    font-size: 0.65rem;
+                    color: var(--muted);
+                  "
+                  >qualquer lugar</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4: PRÉ-REQUISITOS -->
+      <div class="slide">
+        <div class="label">03 — Antes de começar</div>
+        <h2><strong>Pré-requisitos</strong></h2>
+        <p class="subtitle">O que você precisa ter antes de fazer o deploy.</p>
+        <hr />
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">01</div>
+            <div class="step-body">
+              <h4>Conta no GitHub</h4>
+              <p>
+                Gratuita em <code>github.com</code>. O repositório pode ser
+                público ou privado.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">02</div>
+            <div class="step-body">
+              <h4>Conta na Azure</h4>
+              <p>
+                Cadastro gratuito em <code>azure.microsoft.com</code>, com
+                crédito inicial de US$ 200.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">03</div>
+            <div class="step-body">
+              <h4>Projeto no repositório</h4>
+              <p>Arquivos HTML/CSS/JS já commitados e disponíveis no GitHub.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">04</div>
+            <div class="step-body">
+              <h4>Git instalado</h4>
+              <p>
+                Para enviar alterações do computador ao repositório. Verifique
+                com <code>git --version</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5: PASSO A PASSO PORTAL -->
+      <div class="slide">
+        <div class="label">04 — Passo a passo</div>
+        <h2><strong>Criando o recurso na Azure</strong></h2>
+        <hr />
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">01</div>
+            <div class="step-body">
+              <h4>Acesse portal.azure.com e faça login</h4>
+              <p>Clique em "Criar um recurso" (+) no menu lateral.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">02</div>
+            <div class="step-body">
+              <h4>Pesquise "Static Web Apps"</h4>
+              <p>Selecione o serviço da Microsoft e clique em "Criar".</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">03</div>
+            <div class="step-body">
+              <h4>Configure o recurso</h4>
+              <p>
+                Defina assinatura, grupo de recursos, nome do app e região.
+                Plano: <strong>Gratuito</strong>.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">04</div>
+            <div class="step-body">
+              <h4>Conecte ao GitHub</h4>
+              <p>
+                Autorize a Azure. Selecione organização, repositório e branch
+                (<code>main</code>).
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">05</div>
+            <div class="step-body">
+              <h4>Revisar e criar</h4>
+              <p>
+                A Azure gera o arquivo de workflow no seu repositório e faz o
+                primeiro deploy automaticamente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6: VERIFICANDO -->
+      <div class="slide">
+        <div class="label">06 — Verificação</div>
+        <h2><strong>Acompanhando o deploy</strong></h2>
+        <p class="subtitle">Como saber se deu certo após o push.</p>
+        <hr />
+        <div class="two-col">
+          <div class="steps">
+            <div class="step">
+              <div class="step-n">①</div>
+              <div class="step-body">
+                <h4>GitHub → aba Actions</h4>
+                <p>Veja o workflow rodando em tempo real, com logs por step.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">②</div>
+              <div class="step-body">
+                <h4>Portal Azure → Visão geral</h4>
+                <p>Status do deploy e URL pública da aplicação.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-n">③</div>
+              <div class="step-body">
+                <h4>URL gerada</h4>
+                <p><code>https://seu-app.azurestaticapps.net</code></p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p
+              style="
+                font-size: 0.82rem;
+                color: var(--muted);
+                margin-bottom: 1rem;
+              "
+            >
+              Status possíveis no Actions:
+            </p>
+            <div class="steps">
+              <div class="step">
+                <div class="step-n" style="color: #888">⏳</div>
+                <div class="step-body"><p>Queued — aguardando runner</p></div>
+              </div>
+              <div class="step">
+                <div class="step-n" style="color: var(--accent)">🔄</div>
+                <div class="step-body">
+                  <p>In progress — executando steps</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-n" style="color: #22c55e">✓</div>
+                <div class="step-body"><p>Success — deploy concluído</p></div>
+              </div>
+              <div class="step">
+                <div class="step-n" style="color: #ef4444">✕</div>
+                <div class="step-body">
+                  <p>Failure — verifique o log do step com erro</p>
+                </div>
+              </div>
+            </div>
+            <div class="note">
+              Em caso de falha, clique no job com ✕ dentro de Actions para ver o
+              log detalhado.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8: BOAS PRÁTICAS -->
+      <div class="slide">
+        <div class="label">07 — Boas práticas</div>
+        <h2><strong>O que fazer (e não fazer)</strong></h2>
+        <p class="subtitle">Hábitos simples que evitam dores de cabeça.</p>
+        <hr />
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">→</div>
+            <div class="step-body">
+              <h4>Use branches por ambiente</h4>
+              <p>
+                <code>main</code> para produção, <code>dev</code> para
+                desenvolvimento. Nunca suba código não testado direto na main.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">→</div>
+            <div class="step-body">
+              <h4>Escreva commits descritivos</h4>
+              <p>
+                Use prefixos como <code>feat:</code>, <code>fix:</code>,
+                <code>docs:</code> para manter o histórico legível.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">→</div>
+            <div class="step-body">
+              <h4>Nunca commite segredos</h4>
+              <p>
+                API keys e tokens sempre em GitHub Secrets. Adicione
+                <code>.env</code> ao <code>.gitignore</code>.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">→</div>
+            <div class="step-body">
+              <h4>Use Pull Requests</h4>
+              <p>
+                O Static Web Apps cria um ambiente de preview automático para
+                cada PR — use para revisar antes de publicar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9: RESUMO -->
+      <div class="slide">
+        <div class="label">08 — Resumo</div>
+        <h2><strong>O que aprendemos</strong></h2>
+        <p class="subtitle">Três ideias para levar desta apresentação.</p>
+        <hr />
+        <div class="steps" style="margin-bottom: 2rem">
+          <div class="step">
+            <div class="step-n">1</div>
+            <div class="step-body">
+              <h4>Cloud elimina a gestão de servidores</h4>
+              <p>
+                A Azure cuida de disponibilidade, segurança e escala — você foca
+                no produto.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">2</div>
+            <div class="step-body">
+              <h4>Static Web Apps é gratuito e simples</h4>
+              <p>
+                CDN global, HTTPS automático, deploy nativo via GitHub — tudo no
+                plano free.
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">3</div>
+            <div class="step-body">
+              <h4>CI/CD automatiza o trabalho repetitivo</h4>
+              <p>
+                Cada <code>git push</code> na main dispara o pipeline. Do commit
+                ao ar em menos de 3 minutos.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="note">
+          Documentação oficial:
+          <strong>docs.microsoft.com/azure/static-web-apps</strong>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <button id="prev" onclick="go(-1)" disabled>←</button>
+      <span id="counter">1 / 8</span>
+      <button id="next" onclick="go(1)">→</button>
+    </nav>
+    <script src="scprit.js"></script>
+  </body>
+</html>
